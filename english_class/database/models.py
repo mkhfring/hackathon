@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 
 from english_class.database.connect import Base
 
@@ -15,6 +15,7 @@ class FileInformation(Base):
     file_id = Column(String)
     owner_id = Column(String, ForeignKey('user.user_id'))
     witting_owner_name = Column(String, nullable=True)
+    is_sent = Column(Boolean)
 
 
 class Quiz(Base):
@@ -26,4 +27,6 @@ class Quiz(Base):
     option_3 = Column(String)
     option_4 = Column(String)
     answer = Column(Integer)
+    user_id = Column(Integer, ForeignKey('user.user_id'))
+    is_sent = Column(Boolean)
 
