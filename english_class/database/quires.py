@@ -28,7 +28,7 @@ def db_persist(func):
 @db_persist
 def add_user(user_id):
     if not User.is_exist(user_id=user_id):
-        user = User(user_id=user_id)
+        user = User(id=user_id)
         session.add(user)
 
 
@@ -45,20 +45,23 @@ def update_is_sent_status(file_id):
 
 @db_persist
 def save_writing(writing_file, owner_id):
-    owner = session(User).filter(User.user_id == owner_id).one_or_none()
-    file = FileInformation(file_id=writing_file.file_id, owner_id=owner.user_id,
+    owner = session.query(User).filter(User.id == owner_id).one_or_none()
+    file = FileInformation(file_id=writing_file.file_id, owner_id=owner.id,
                            witting_owner_name=owner.name)
     session.add(file)
 
 
 @db_persist
 def get_user_related_quiz(user_id):
-    quiz_id = session.query(UserQuiz).filter(UserQuiz.user_id == user_id).one_or_none()
+    user_quiz = session.query(UserQuiz).filter(UserQuiz.user_id == user_id).one_or_none()
 
-    if not quiz_id:
+    quiz_id = int()
+
+    if not user_quiz:
         quiz_id = 1
 
-    quiz = session.query(Quiz).filter(Quiz.id == quiz_id)
+    quiz = session.query(Quiz).filter(Quiz.id == quiz_id).one_or_none()
+
 
     quiz_id += 1
 
