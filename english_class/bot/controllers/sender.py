@@ -11,6 +11,7 @@ import logging
 from telegram import ReplyKeyboardMarkup, Bot, LabeledPrice
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
 from english_class.constants.messages import LogMessage
+from english_class.constants.states import BotState
 
 update_id = None
 token = '1254471079:966a4cd79b0c28fca23e9d37fb1473243a3b9468'
@@ -20,15 +21,13 @@ logger = logging.getLogger()
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.DEBUG)
 
-REG, PAYMENT = range(2)
-
 
 def start(bot: Bot, update):
     reply_keyboard = [['register', 'Other']]
     update.message.reply_text(text="سلام به کلاس زبان خوش‌آمدید."
                               ,
                               reply_markup=ReplyKeyboardMarkup(keyboard=reply_keyboard))
-    return REG
+    return BotState.reg
 
 
 def register(bot, update):
@@ -38,7 +37,7 @@ def register(bot, update):
     bot.send_invoice(chat_id=update.message.chat_id, title="title", description="description", payload="payload",
                      provider_token="6221061212318796", start_parameter="", currency="IRR",
                      prices=[LabeledPrice('label1', 1000)])
-    return PAYMENT
+    return BotState.pay
 
 
 def handle_payment(bot, update):
@@ -56,8 +55,8 @@ conversation_handler = ConversationHandler(
     entry_points=[CommandHandler('start', start)],
 
     states={
-        REG: [MessageHandler(filters=Filters.text, callback=register)],
-        PAYMENT: [MessageHandler(filters=Filters.successful_payment, callback=handle_payment)],
+        BotState.reg: [MessageHandler(filters=Filters.text, callback=register)],
+        BotState.pay: [MessageHandler(filters=Filters.successful_payment, callback=handle_payment)],
     },
 
     fallbacks=[]
