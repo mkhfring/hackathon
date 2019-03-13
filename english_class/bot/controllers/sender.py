@@ -8,12 +8,9 @@ on the telegram.ext bot framework.
 This program is dedicated to the public domain under the CC0 license.
 """
 import logging
-
 from telegram import ReplyKeyboardMarkup, Bot, LabeledPrice
-
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
-
-from constants.messages import LogMessage
+from english_class.constants.messages import LogMessage
 
 update_id = None
 token = '1254471079:966a4cd79b0c28fca23e9d37fb1473243a3b9468'

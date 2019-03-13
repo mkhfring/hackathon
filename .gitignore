@@ -123,7 +123,6 @@ dmypy.json
 data/
 bankofficer/sensetive_conf.yml
 deploy/
-config.py
 practice/
 *.tar.gz
 
