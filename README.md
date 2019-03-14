@@ -41,13 +41,11 @@ services:
       - /home/vipbot:/home/vipbot
     container_name: "vip_admin_practice"
     environment:
+      - PROVIDER_TOKEN=
       - BOT_TOKEN=
-      - supported_users=
-      - DB_HOSTNAME=
-      - DB_USERNAE=
-      - DB_PASSWORD=
-      - DB_PORT=
-      - DB_NAME=
+      - AMOUNT=:w
+      
+     
 ```
 
 Then run docker-compose up -d
