@@ -33,8 +33,13 @@ def add_user(user_id):
 
 
 def get_all_not_sent_information():
-    return session.query(FileInformation).filter(FileInformation.is_sent is False).filter(
-        FileInformation.witting_owner_name is None).first()
+    try:
+        info = session.query(FileInformation).filter(FileInformation.is_sent == False).filter(
+            FileInformation.witting_owner_name == None).first()
+        return info
+    except Exception as e:
+        session.rollback()
+        return None
 
 
 @db_persist
@@ -61,7 +66,6 @@ def get_user_related_quiz(user_id):
         quiz_id = 1
 
     quiz = session.query(Quiz).filter(Quiz.id == quiz_id).one_or_none()
-
 
     quiz_id += 1
 
