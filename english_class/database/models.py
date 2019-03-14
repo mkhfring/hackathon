@@ -10,7 +10,7 @@ class User(Base):
 
     @classmethod
     def is_exist(cls, user_id):
-        return session.query(cls).filter(cls.user_id == user_id).one_or_none()
+        return session.query(cls).filter(cls.id == user_id).one_or_none()
 
 
 class FileInformation(Base):
@@ -30,7 +30,7 @@ class Quiz(Base):
     option_2 = Column(String)
     option_3 = Column(String)
     option_4 = Column(String)
-    answer = Column(Integer)
+    answer = Column(String)
     user_id = Column(Integer, ForeignKey('user.id'))
     is_sent = Column(Boolean)
 
@@ -38,12 +38,12 @@ class Quiz(Base):
 class UserQuiz(Base):
     __tablename__ = 'user_quiz'
 
-    quiz_id = Column(Integer, ForeignKey('Quiz.id'), primary_key=True)
-    user_id = Column(Integer, ForeignKey('User.id'), primary_key=True)
+    quiz_id = Column(Integer, ForeignKey('quiz.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
 
 
 class UserInformation(Base):
     __tablename__ = 'information_quiz'
 
-    information_id = Column(Integer, ForeignKey('FileInformation.id'), primary_key=True)
-    user_id = Column(Integer, ForeignKey('User.id'), primary_key=True)
+    information_id = Column(Integer, ForeignKey('file_information.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
