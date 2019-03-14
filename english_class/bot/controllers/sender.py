@@ -171,16 +171,16 @@ def save_writing_file(bot, update):
                      text="your essay has been saved, wait for review.")
 
 
-start_handler = CommandHandler('start', main_menu)
+start_handler = CommandHandler('start', start)
 
 conversation_handler = ConversationHandler(
-    entry_points=[CommandHandler('start', main_menu)],
+    entry_points=[CommandHandler('start', start)],
 
     states={
         BotState.reg: [start_handler,
                        MessageHandler(filters=Filters.text, callback=register)],
         BotState.pay: [start_handler,
-                       MessageHandler(filters=Filters.text,
+                       MessageHandler(filters=Filters.successful_payment,
                                       callback=handle_payment)],
         BotState.menu: [start_handler,
                         RegexHandler(pattern='^Enter to class 😋$',
