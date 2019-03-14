@@ -2,6 +2,7 @@
 
 
 class BotState:
+    save_writing = 'save_writing'
     reg = 'reg'
     pay = 'pay'
     menu = 'menu'
@@ -11,5 +12,8 @@ class BotState:
     check_quiz = 'check_quiz'
     correct_ans = 'correct_ans'
     wrong_ans = 'wrong_ans'
+    selected_menu_option = 'selected_menu_option'
+    next_information = "next_information"
+    get_location = 'get_location'
 
 
