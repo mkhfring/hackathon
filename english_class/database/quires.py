@@ -5,7 +5,8 @@ import logging
 
 from english_class.constants.messages import LogMessage
 from english_class.database import connect
-from english_class.database.models import User, FileInformation, UserQuiz, Quiz
+from english_class.database.models import User, FileInformation, UserQuiz, Quiz, \
+    UserInformation
 
 session = connect.session_factory()
 
@@ -34,7 +35,8 @@ def add_user(user_id):
 
 def get_all_not_sent_information():
     try:
-        info = session.query(FileInformation).filter(FileInformation.is_sent == False).filter(
+        info = session.query(FileInformation).filter(
+            FileInformation.is_sent == False).filter(
             FileInformation.witting_owner_name == None).first()
         return info
     except Exception as e:
@@ -44,7 +46,8 @@ def get_all_not_sent_information():
 
 @db_persist
 def update_is_sent_status(file_id):
-    info = session.query(FileInformation).filter(FileInformation.file_id == file_id).one_or_none()
+    info = session.query(FileInformation).filter(
+        FileInformation.file_id == file_id).one_or_none()
     info.is_sent = True
 
 
@@ -56,9 +59,9 @@ def save_writing(writing_file, owner_id):
     session.add(file)
 
 
-@db_persist
 def get_user_related_quiz(user_id):
-    user_quiz = session.query(UserQuiz).filter(UserQuiz.user_id == user_id).one_or_none()
+    user_quiz = session.query(UserQuiz).filter(
+        UserQuiz.user_id == user_id).one_or_none()
 
     quiz_id = int()
 
@@ -71,6 +74,36 @@ def get_user_related_quiz(user_id):
 
     user_quiz = UserQuiz(quiz_id=quiz_id, user_id=user_id)
 
-    session.merge(user_quiz)
+    try:
+        session.merge(user_quiz)
+        session.commit()
+        return quiz
+    except SQLAlchemyError as e:
+        logger.info(LogMessage.db_error.format(e, "getting user related quiz"))
+        session.rollback()
+
+
+def get_user_related_info(user_id):
+    user_info = session.query(UserInformation).filter(
+        UserInformation.user_id == user_id).one_or_none()
+
+    info_id = int()
+
+    if not user_info:
+        info_id = 1
+
+    quiz = session.query(FileInformation).filter(
+        FileInformation.id == info_id).one_or_none()
+
+    info_id += 1
+
+    user_info = UserQuiz(quiz_id=info_id, user_id=user_id)
+
+    try:
+        session.merge(user_info)
+        session.commit()
+    except SQLAlchemyError as e:
+        logger.info(LogMessage.db_error.format(e, "getting user related info"))
+        session.rollback()
 
     return quiz
