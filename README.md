@@ -36,14 +36,14 @@ create a docker-compose file like below:
 version: '3.4'
 services:
   vip_report_bot:
-    image: "docker.bale.ai/bank/vip_admin:0.1-1"
+    image: 
     volumes:
-      - /home/vipbot:/home/vipbot
-    container_name: "vip_admin_practice"
+      - /home/enbot:/home/enbot
+    container_name: 
     environment:
       - PROVIDER_TOKEN=
       - BOT_TOKEN=
-      - AMOUNT=:w
+      - AMOUNT=
       
      
 ```
