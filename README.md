@@ -1,5 +1,5 @@
 # English class
-A bale bot to simulate an English class room
+A Telegram bot to simulate an English class room
 ## Getting Started
 ### Enviroment setup
 First install requirments and create a virtual environment for the project using codes below:
